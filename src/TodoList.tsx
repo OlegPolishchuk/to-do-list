@@ -1,27 +1,45 @@
-import React from "react";
-import {TaskType} from "./App";
+import React, {useState} from "react";
+import {FilterValuesType, TaskType} from "./App";
 import TodoListHearer from "./TodoListHearer";
 import Button from "./Button";
 import TasksList from "./TasksList";
 
 type TodoListPropsType = {
-    title: string,
+    title: string
     tasks: Array<TaskType>
+    removeTask: (id:string) => void
+    addTask: (title: string) => void
+    changeFilter: (filter: FilterValuesType) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
+    const [title, setTitle] = useState<string>('');
+    const onClickBtnHandler = () => {
+        props.addTask(title)
+        setTitle('')
+    }
+    const onKeyPressAddTask = (key: string) => {
+        if (key === 'Enter') {
+            onClickBtnHandler()
+        }
+    }
+
     return (
         <div>
             <TodoListHearer title={props.title}/>
             <div>
-                <input/>
-                <button>+</button>
+                <input
+                    value={title}
+                    onChange={(event) => setTitle(event.currentTarget.value)}
+                    onKeyPress={(event) => {onKeyPressAddTask(event.key)}}
+                />
+                <button onClick={() => onClickBtnHandler()}>+</button>
             </div>
-            <TasksList tasks={props.tasks}/>
+            <TasksList tasks={props.tasks} removeTask={props.removeTask}/>
             <div>
-                <Button title={'All'}/>
-                <Button title={'Active'}/>
-                <Button title={'Completed'}/>
+                <Button onClickHandler={() => props.changeFilter('all')} title={'All'}/>
+                <Button onClickHandler={() => props.changeFilter('active')} title={'Active'}/>
+                <Button onClickHandler={() => props.changeFilter('completed')} title={'Completed'}/>
             </div>
         </div>
     );
