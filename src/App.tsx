@@ -3,7 +3,7 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import {addTaskAC, removeTaskAC, tasksReducer} from "./reducers/TasksReducer";
+import {addTaskAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./reducers/TasksReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 type TodolistType = {
@@ -103,6 +103,7 @@ function App() {
         //     // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         //     setTasks({...tasks});
         // }
+        tasksDispatch(changeTaskTitleAC(todolistId, id, newTitle))
     }
 
     function removeTodolist(id: string) {
