@@ -11,7 +11,13 @@ import {
     removeTaskAC,
     tasksReducer
 } from "./reducers/TasksReducer";
-import {addTodoListAC, changeTodoListTitleAC, removeTodolistAC, todoListReducer} from "./reducers/TodoListReducer";
+import {
+    addTodoListAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    removeTodolistAC,
+    todoListReducer
+} from "./reducers/TodoListReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -60,11 +66,7 @@ function App() {
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        // let todolist = todolists.find(tl => tl.id === todolistId);
-        // if (todolist) {
-        //     todolist.filter = value;
-        //     setTodolists([...todolists])
-        // }
+        todoListsDispatch(changeTodoListFilterAC(todolistId, value))
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
