@@ -2,7 +2,7 @@ import {TaskType} from "../Todolist";
 import {v1} from "uuid";
 import {TasksStateType} from "../App";
 
-type tasksReducer = RemoveTaskACType | AddTaskACType | ChangeTaskTitleType | InitTasksListACType
+type tasksReducer = RemoveTaskACType | AddTaskACType | ChangeTaskTitleType | InitTasksListACType | ChangeTaskStatusACType
 
 export const tasksReducer = (state: TasksStateType, action: tasksReducer) => {
     switch (action.type) {
@@ -31,6 +31,12 @@ export const tasksReducer = (state: TasksStateType, action: tasksReducer) => {
         case 'INIT-TASKS-LIST' : {
             const todoListId = action.payload.todoLustId
             return {...state, [todoListId]: []}
+        }
+
+        case 'CHANGE-TASK-STATUS': {
+            const {todoListId, taskId, isDone} = action.payload
+
+            return {...state, [todoListId]: state[todoListId].map(el => el.id === taskId ? {...el, isDone} : el)}
         }
 
         default:
@@ -86,6 +92,43 @@ export const initTasksListAC = (todoLustId: string) => {
         }
     } as const
 }
+
+type ChangeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
+
+export const changeTaskStatusAC = (todoListId: string, taskId: string, isDone: boolean) => {
+    return {
+        type: 'CHANGE-TASK-STATUS',
+        payload: {
+            todoListId,
+            taskId,
+            isDone
+        }
+    } as const
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // export const TasksReducer = (state: TaskType[], action: TasksReducersType) => {

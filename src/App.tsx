@@ -3,7 +3,14 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import {addTaskAC, changeTaskTitleAC, initTasksListAC, removeTaskAC, tasksReducer} from "./reducers/TasksReducer";
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    initTasksListAC,
+    removeTaskAC,
+    tasksReducer
+} from "./reducers/TasksReducer";
 import {addTodoListAC, changeTodoListTitleAC, removeTodolistAC, todoListReducer} from "./reducers/TodoListReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -61,16 +68,8 @@ function App() {
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        // //достанем нужный массив по todolistId:
-        // let todolistTasks = tasks[todolistId];
-        // // найдём нужную таску:
-        // let task = todolistTasks.find(t => t.id === id);
-        // //изменим таску, если она нашлась
-        // if (task) {
-        //     task.isDone = isDone;
-        //     // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        //     setTasks({...tasks});
-        // }
+
+        tasksDispatch(changeTaskStatusAC(todolistId, id, isDone))
     }
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
         tasksDispatch(changeTaskTitleAC(todolistId, id, newTitle))
