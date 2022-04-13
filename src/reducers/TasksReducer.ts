@@ -2,7 +2,7 @@ import {TaskType} from "../Todolist";
 import {v1} from "uuid";
 import {TasksStateType} from "../App";
 
-type tasksReducer = RemoveTaskACType | AddTaskACType | ChangeTaskTitleType
+type tasksReducer = RemoveTaskACType | AddTaskACType | ChangeTaskTitleType | InitTasksListACType
 
 export const tasksReducer = (state: TasksStateType, action: tasksReducer) => {
     switch (action.type) {
@@ -24,8 +24,13 @@ export const tasksReducer = (state: TasksStateType, action: tasksReducer) => {
 
         case 'CHANGE-TASK-TITLE' : {
             const {todoListId, taskId, title} = action.payload
-
+                console.log({...state, [todoListId]: state[todoListId].map(el => el.id === taskId ? {...el, title} : el)})
             return {...state, [todoListId]: state[todoListId].map(el => el.id === taskId ? {...el, title} : el)}
+        }
+
+        case 'INIT-TASKS-LIST' : {
+            const todoListId = action.payload.todoLustId
+            return {...state, [todoListId]: []}
         }
 
         default:
@@ -67,6 +72,17 @@ export const changeTaskTitleAC = (todoListId: string, taskId: string, title: str
             todoListId,
             taskId,
             title
+        }
+    } as const
+}
+
+type InitTasksListACType = ReturnType<typeof initTasksListAC>
+
+export const initTasksListAC = (todoLustId: string) => {
+    return {
+        type: 'INIT-TASKS-LIST',
+        payload: {
+            todoLustId
         }
     } as const
 }
