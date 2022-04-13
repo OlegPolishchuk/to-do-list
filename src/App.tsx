@@ -35,14 +35,14 @@ function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let newTodoListId = v1();
+    // let newTodoListId = v1();
 
-    let [todolists, todoListsDispatch] = useReducer(todoListReducer,[
+    let [todolists, todoListsDispatch] = useReducer(todoListReducer, [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
 
-    let [tasks, tasksDispatch] = useReducer(tasksReducer,{
+    let [tasks, tasksDispatch] = useReducer(tasksReducer, {
         [todolistId1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true}
@@ -53,12 +53,9 @@ function App() {
         ]
     });
 
-    useEffect(()=> {
-        tasksDispatch(initTasksListAC(newTodoListId))
-    }, [todolists])
 
     function removeTask(id: string, todolistId: string) {
-        tasksDispatch(removeTaskAC(todolistId,id))
+        tasksDispatch(removeTaskAC(todolistId, id))
     }
 
     function addTask(title: string, todolistId: string) {
@@ -73,6 +70,7 @@ function App() {
 
         tasksDispatch(changeTaskStatusAC(todolistId, id, isDone))
     }
+
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
         tasksDispatch(changeTaskTitleAC(todolistId, id, newTitle))
     }
@@ -80,26 +78,26 @@ function App() {
     function removeTodolist(id: string) {
         todoListsDispatch(removeTodolistAC(id))
     }
+
     function changeTodolistTitle(id: string, title: string) {
         todoListsDispatch(changeTodoListTitleAC(id, title))
     }
 
 
-
     function addTodolist(title: string) {
 
         // ПОМОЩЬ МЕНТОРА !!!
-        todoListsDispatch(addTodoListAC(newTodoListId,title))
-
-        console.log(tasks)
+        debugger
+        const newTodoListId = v1()
+        todoListsDispatch(addTodoListAC(newTodoListId, title))
+        tasksDispatch(initTasksListAC(newTodoListId))
     }
 
     return (
         <div className="App">
-            <AddItemForm addItem={addTodolist} />
+            <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map(tl => {
-                    console.log(tasks[tl.id])
                     let allTodolistTasks = tasks[tl.id];
                     let tasksForTodolist = allTodolistTasks;
 
